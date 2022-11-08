@@ -1,0 +1,113 @@
+/* Message */
+.messageDiv 
+{
+  min-height: 93vh ;
+  background: var(--bs-gray-900) ;
+}
+
+.message 
+{
+  width: 80% ;
+  background: var(--bs-gray-500) ;
+  border: 1.5px solid var(--bs-gray-700) ;
+  border-radius: 10px ;
+  margin-top: 0.25rem ;
+  margin-bottom: 0.25rem ;
+  min-height: 50px ;
+}
+
+.time 
+{
+  color: var(--bs-gray-900) ;
+  font-size: 0.75em ;
+  font-family: Oxygen, sans-serif ;
+  text-align: center ;
+  margin-bottom: 5px ;
+  font-weight: bold ;
+}
+
+.messageText 
+{
+  margin: 0px ;
+  font-family: Oxygen, sans-serif ;
+  font-size: 0.9em ;
+  text-align: center ;
+  font-weight: bold ;
+  color: var(--bs-gray-900) ;
+}
+
+.messageImg 
+{
+  min-width: 35px ;
+  max-width: 35px ;
+  min-height: 35px ;
+  max-height: 35px ;
+  border-radius: 30px ;
+}
+
+.inputDiv 
+{
+  min-height: 7vh ;
+  background: var(--bs-gray-700) ;
+}
+
+.txtInput 
+{
+  width: 90% ;
+  background: var(--bs-gray-700) ;
+  border-radius: 5px ;
+  border: 1.5px solid var(--bs-gray-300) ;
+  color: var(--bs-gray-300) ;
+  text-align: left ;
+  font-family: Oxygen, sans-serif ;
+  font-size: 1em ;
+  padding: 5px 10px ;
+  font-weight: bold ;
+}
+
+.txtInput:focus
+{
+  color: var(--bs-gray-300) ;
+  background: var(--bs-gray-700) ;
+  border: 1.5px solid var(--bs-gray-300) ;
+  box-shadow: 3px 3px var(--bs-gray-300) ;
+}
+
+.btnIcon 
+{
+  font-size: 1.25em ;
+}
+
+.inputBtn 
+{
+  margin-left: 3% ;
+  min-width: 45px ;
+  max-width: 45px ;
+  min-height: 45px ;
+  max-height: 45px ;
+  border-style: none ;
+  border-radius: 30px ;
+  background: var(--bs-gray-900) ;
+  padding-left: 10px ;
+  color: var(--bs-gray-300) !important ;
+
+  transition: all 250ms ease-in ;
+}
+
+.inputBtn:hover
+{
+  transform: scale(0.75) ;
+  background: var(--bs-teal) ;
+}
+
+.inputBtn:focus
+{
+  transform: scale(0.75) ;
+  outline: none ;
+}
+
+.inputBtn:active
+{
+  transform: scale(0.90) ;
+  background: var(--bs-teal) ;
+}

@@ -1,0 +1,31 @@
+/* Default */
+p
+{
+  cursor: default ;
+}
+
+span
+{
+  cursor: default ;
+}
+
+h1
+{
+  cursor: default ;
+}
+
+/* Scalar */
+.scalar
+{
+  transition: all 250ms ease-in ;
+}
+
+.scalar:hover
+{
+  transform: scale(0.93) ;
+}
+
+.scalar:active
+{
+  transform: scale(0.97) ;
+}
