@@ -1,8 +1,52 @@
+/* Chat */
+.chatNav 
+{
+  min-height: 7vh ;
+  background: var(--bs-gray-700) ;
+  border-bottom: 3px solid var(--bs-gray-300) ;
+}
+
+.chatLink 
+{
+  color: var(--bs-gray-300) ;
+  font-size: 1.5em ;
+  margin-right: 10px ;
+
+  transition: all 250ms ease-in ;
+}
+
+.chatLink:hover 
+{
+  color: var(--bs-gray-900) ;
+  transform: scale(0.9) ;
+}
+
+.chatName 
+{
+  margin: 0px ;
+  margin-top: 3px ;
+  font-family: Epilogue, sans-serif ;
+  font-size: 1em ;
+  color: var(--bs-gray-300) ;
+  text-align: justify ;
+}
+
+.chatNavImg 
+{
+  min-width: 45px ;
+  max-width: 45px ;
+  min-height: 45px ;
+  max-height: 45px ;
+  border-radius: 30px ;
+  margin: 5px 0px ;
+}
+
 /* Message */
 .messageDiv 
 {
-  min-height: 93vh ;
+  min-height: 86vh ;
   background: var(--bs-gray-900) ;
+  padding: 0.75rem ;
 }
 
 .message 
@@ -45,10 +89,12 @@
   border-radius: 30px ;
 }
 
-.inputDiv 
+.inputDiv
 {
+  padding: 0px ;
   min-height: 7vh ;
   background: var(--bs-gray-700) ;
+  border-top: 3px solid var(--bs-gray-300) ;
 }
 
 .txtInput 

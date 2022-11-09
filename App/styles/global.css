@@ -14,18 +14,34 @@ h1
   cursor: default ;
 }
 
-/* Scalar */
-.scalar
+.width95
+{
+  width: 95% !important ;
+}
+
+a
+{
+  text-decoration: none ;
+}
+
+a:hover
+{
+  color: inherit ;
+  cursor: pointer ;
+}
+
+/* Scale */
+.scale
 {
   transition: all 250ms ease-in ;
 }
 
-.scalar:hover
+.scale:hover
 {
   transform: scale(0.93) ;
 }
 
-.scalar:active
+.scale:active
 {
   transform: scale(0.97) ;
 }
