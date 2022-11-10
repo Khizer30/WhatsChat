@@ -1,0 +1,43 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  uid    Int           @id @unique @default(autoincrement())
+  name   String        @default("")
+  groups UserToGroup[]
+}
+
+model Group {
+  gid      Int           @id @unique @default(autoincrement())
+  users    UserToGroup[]
+  messages Message[]
+}
+
+model Message {
+  group Group @relation(fields: [gid], references: [gid], onDelete: Cascade)
+
+  mid     Int    @id @unique @default(autoincrement())
+  gid     Int
+  seconds String @default("0")
+  time    String @default("00:00")
+  sender  String @default("")
+  text    String @default("")
+}
+
+model UserToGroup {
+  group Group @relation(fields: [gid], references: [gid], onDelete: NoAction)
+  user  User  @relation(fields: [uid], references: [uid], onDelete: Cascade)
+
+  gid Int
+  uid Int
+
+  @@id([gid, uid])
+}

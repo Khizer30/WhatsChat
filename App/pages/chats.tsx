@@ -31,17 +31,17 @@ function Chats(): JSX.Element
   }
 
   // Message Mapper
-  function messageMapper(x: MessageType, i: number): JSX.Element
+  function messageMapper(x: MessageType): JSX.Element
   {
     return (
-      <Message key={ i } seconds={ x.seconds } time={ x.time } sender={ x.sender } text={ x.text } />
+      <Message key={ x.mid } time={ x.time } sender={ x.sender } text={ x.text } />
     )
   }
 
   // Start
   useEffect(() =>
   {
-    socket.emit("start") ;
+    socket.emit("start", 5) ;
   }, []) ;
 
   // Listen Updates
@@ -58,18 +58,18 @@ function Chats(): JSX.Element
       let tempDate: Date = new Date() ;
       let temp: number = 0 ;
 
-      let seconds: number = tempDate.getMilliseconds() ;
-
       temp = tempDate.getHours() ;
       let hours: string = (temp < 10) ? `0${ temp }` : `${ temp }` ;
 
       temp = tempDate.getMinutes() ;
       let minutes: string = (temp < 10) ? `0${ temp }` : `${ temp }` ;
 
+      let seconds: string = `${ tempDate.getTime() }` ;
       let time: string = `${ hours }:${ minutes }` ;
 
       let message: MessageType =
       {
+        gid: 5,
         seconds: seconds,
         time: time,
         sender: "Ashhad",
@@ -129,6 +129,7 @@ function Chats(): JSX.Element
           maxLength={ 100 }
           minLength={ 0 }
           placeholder="Message*"
+          autoFocus
           required
           className={ "d-flex justify-content-center align-items-center form-control " + styles.txtInput }
         />

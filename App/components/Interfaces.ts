@@ -1,7 +1,9 @@
 // Message Interface
 interface MessageType
 {
-  seconds: number ;
+  mid?: number ;
+  gid?: number ;
+  seconds?: string ;
   time: string ;
   sender: string ;
   text: string ;

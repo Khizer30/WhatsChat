@@ -1,7 +1,7 @@
 import Image from "next/image" ;
 // ...
 import styles from "../styles/chats.module.css" ;
-import user1 from "../public/images/avatar_1.webp" ;
+import userImg from "../public/images/avatar_1.webp" ;
 import type { MessageType } from "../components/Interfaces" ;
 
 // Message
@@ -20,7 +20,7 @@ function Message({ time, sender, text }: MessageType): JSX.Element
 
       <div className="col-2 d-flex justify-content-end align-items-center">
         <Image
-          src={ user1 }
+          src={ userImg }
           alt="Avatar"
           draggable="false"
           placeholder="empty"

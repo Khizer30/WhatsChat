@@ -3,19 +3,13 @@ import cors from "cors" ;
 import { Server } from "socket.io" ;
 import { createServer } from "http" ;
 import type { Express } from "express" ;
+import type { Message } from "@prisma/client" ;
+// ...
+import { addMessage, readMessages } from "./lib/prisma" ;
 
 // Dot Env
 import * as dotenv from "dotenv" ;
 dotenv.config() ;
-
-// Message Interface
-interface MessageType
-{
-  seconds: number ;
-  time: string ;
-  sender: string ;
-  text: string ;
-}
 
 // App
 const app: Express = express() ;
@@ -27,26 +21,29 @@ app.use(cors()) ;
 // HTTP Server
 const httpServer = createServer(app) ;
 
-// Socket
-const io = new Server(httpServer, { cors: { origin: `${ process.env.ORIGIN }` } }) ;
+// Socket IO
+const io = new Server(httpServer, { cors: { origin: process.env.ORIGIN! } }) ;
 
 // Stack
-let stack: MessageType[] = [] ;
+let stack: Message[] = [] ;
 
 // Listen Connection
 io.on("connection", (socket) =>
 {
   // Listen Start
-  socket.once("start", () =>
+  socket.once("start", async (group: number) =>
   {
+    stack = await readMessages(group) ;
+
     // Emit Updates
     socket.emit("updates", stack) ;
   })
 
   // Listen Message
-  socket.on("message", (arg: MessageType) =>
+  socket.on("message", async (message: Message) =>
   {
-    stack.push(arg) ;
+    await addMessage(message) ;
+    stack = await readMessages(message.gid) ;
 
     // Emit Updates
     socket.emit("updates", stack) ;
