@@ -3,10 +3,10 @@
 {
   min-height: 7vh ;
   background: var(--bs-gray-700) ;
-  border-bottom: 3px solid var(--bs-gray-300) ;
+  border-bottom: 1.5px solid var(--bs-gray-300) ;
 }
 
-.chatLink 
+.chatLink
 {
   color: var(--bs-gray-300) ;
   font-size: 1.5em ;
@@ -44,8 +44,8 @@
 /* Message */
 .messageDiv 
 {
-  min-height: 86vh ;
-  background: var(--bs-gray-900) ;
+  min-height: 87vh ;
+  background: rgb(38,38,38) ;
   padding: 0.75rem ;
 }
 
@@ -92,17 +92,17 @@
 .inputDiv
 {
   padding: 0px ;
-  min-height: 7vh ;
-  background: var(--bs-gray-700) ;
-  border-top: 3px solid var(--bs-gray-300) ;
+  min-height: 5vh ;
+  background: rgb(87,87,87) ;
+  border-radius: 30px ;
+  width: 90% ;
+  margin-bottom: 1vh ;
 }
 
 .txtInput 
 {
-  width: 90% ;
-  background: var(--bs-gray-700) ;
-  border-radius: 5px ;
-  border: 1.5px solid var(--bs-gray-300) ;
+  border: none ;
+  background: rgb(87,87,87) ;
   color: var(--bs-gray-300) ;
   text-align: left ;
   font-family: Oxygen, sans-serif ;
@@ -113,28 +113,28 @@
 
 .txtInput:focus
 {
+  border: none ;
+  box-shadow: none ;
   color: var(--bs-gray-300) ;
-  background: var(--bs-gray-700) ;
-  border: 1.5px solid var(--bs-gray-300) ;
-  box-shadow: 3px 3px var(--bs-gray-300) ;
+  background: rgb(87,87,87) ;
 }
 
 .btnIcon 
 {
-  font-size: 1.25em ;
+  font-size: 1em ;
 }
 
 .inputBtn 
 {
   margin-left: 3% ;
-  min-width: 45px ;
-  max-width: 45px ;
-  min-height: 45px ;
-  max-height: 45px ;
+  min-width: 35px ;
+  max-width: 35px ;
+  min-height: 35px ;
+  max-height: 35px ;
   border-style: none ;
   border-radius: 30px ;
   background: var(--bs-gray-900) ;
-  padding-left: 10px ;
+  padding-left: 7px ;
   color: var(--bs-gray-300) !important ;
 
   transition: all 250ms ease-in ;
@@ -148,7 +148,6 @@
 
 .inputBtn:focus
 {
-  transform: scale(0.75) ;
   outline: none ;
 }
 

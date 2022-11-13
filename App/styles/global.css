@@ -1,4 +1,9 @@
 /* Default */
+body
+{
+  background-color: rgb(38,38,38) ;
+}
+
 p
 {
   cursor: default ;
@@ -28,6 +33,11 @@ a:hover
 {
   color: inherit ;
   cursor: pointer ;
+}
+
+::placeholder
+{
+  color: var(--bs-gray-500) !important ;
 }
 
 /* Scale */

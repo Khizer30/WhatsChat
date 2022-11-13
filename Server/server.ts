@@ -44,7 +44,7 @@ io.on("connection", (socket) =>
   {
     await addMessage(message) ;
     stack = await readMessages(message.gid) ;
-
+  
     // Emit Updates
     socket.emit("updates", stack) ;
   })

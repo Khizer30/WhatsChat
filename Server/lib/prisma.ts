@@ -13,7 +13,6 @@ async function addMessage(x: Message): Promise<void>
       data:
       {
         gid: x.gid,
-        seconds: x.seconds,
         time: x.time,
         sender: x.sender,
         text: x.text

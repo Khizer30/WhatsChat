@@ -53,7 +53,7 @@ function Chats(): JSX.Element
   // Send
   function send(): void
   {
-    if (text !== "" && text.length <= 100)
+    if (text !== "" && text.trim().length <= 100)
     {
       let tempDate: Date = new Date() ;
       let temp: number = 0 ;
@@ -64,16 +64,14 @@ function Chats(): JSX.Element
       temp = tempDate.getMinutes() ;
       let minutes: string = (temp < 10) ? `0${ temp }` : `${ temp }` ;
 
-      let seconds: string = `${ tempDate.getTime() }` ;
       let time: string = `${ hours }:${ minutes }` ;
 
       let message: MessageType =
       {
         gid: 5,
-        seconds: seconds,
         time: time,
         sender: "Ashhad",
-        text: text
+        text: text.trim()
       } ;
 
       // Emit Message
@@ -128,7 +126,7 @@ function Chats(): JSX.Element
           onChange={ handleChange }
           maxLength={ 100 }
           minLength={ 0 }
-          placeholder="Message*"
+          placeholder="Type Message Here..."
           autoFocus
           required
           className={ "d-flex justify-content-center align-items-center form-control " + styles.txtInput }
