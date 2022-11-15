@@ -10,9 +10,12 @@ datasource db {
 }
 
 model User {
-  uid    Int           @id @unique @default(autoincrement())
-  name   String        @default("")
-  groups UserToGroup[]
+  uid      Int           @id @unique @default(autoincrement())
+  name     String        @default("")
+  email    String        @unique @default("")
+  password String        @default("")
+  image    String        @default("")
+  groups   UserToGroup[]
 }
 
 model Group {

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client" ;
+// ...
 import type { Message } from "@prisma/client" ;
 
 // Prisma
@@ -30,7 +31,7 @@ async function addMessage(x: Message): Promise<void>
 }
 
 // Read Messages
-async function readMessages(group: number): Promise<Message[]>
+async function readMessages(gid: number): Promise<Message[]>
 {
   let messages: Message[] = [] ;
 
@@ -39,7 +40,7 @@ async function readMessages(group: number): Promise<Message[]>
     messages = await prisma.message.findMany({
       where:
       {
-        gid: group
+        gid: gid
       }
     }) ;
   }

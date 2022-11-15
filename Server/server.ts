@@ -31,9 +31,9 @@ let stack: Message[] = [] ;
 io.on("connection", (socket) =>
 {
   // Listen Start
-  socket.once("start", async (group: number) =>
+  socket.once("start", async (gid: number) =>
   {
-    stack = await readMessages(group) ;
+    stack = await readMessages(gid) ;
 
     // Emit Updates
     socket.emit("updates", stack) ;

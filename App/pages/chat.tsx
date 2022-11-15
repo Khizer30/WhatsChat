@@ -4,18 +4,21 @@ import Image from "next/image" ;
 import Link from "next/link" ;
 import { io } from "socket.io-client" ;
 // ...
-import styles from "../styles/chats.module.css" ;
 import Message from "../components/Message" ;
-import receiver from "../public/images/avatar_3.webp" ;
 import type { MessageType } from "../components/Interfaces" ;
+import styles from "../styles/chats.module.css" ;
+import receiverImg from "../public/images/avatar_3.webp" ;
 
-// Chats
-function Chats(): JSX.Element
+// Chat
+function Chat(): JSX.Element
 {
   // Variables
   const socket = io(process.env.NEXT_PUBLIC_URL!) ;
   const [text, setText] = useState<string>("") ;
   const [stack, setStack] = useState<MessageType[]>([]) ;
+  const gid: number = 5 ;
+  const sender: number = 3 ;
+  const receiver: string = "Imran Khan" ;
 
   // Handle Change
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void
@@ -41,7 +44,7 @@ function Chats(): JSX.Element
   // Start
   useEffect(() =>
   {
-    socket.emit("start", 5) ;
+    socket.emit("start", gid) ;
   }, []) ;
 
   // Listen Updates
@@ -64,13 +67,13 @@ function Chats(): JSX.Element
       temp = tempDate.getMinutes() ;
       let minutes: string = (temp < 10) ? `0${ temp }` : `${ temp }` ;
 
-      let time: string = `${ hours }:${ minutes }` ;
+      const time: string = `${ hours }:${ minutes }` ;
 
-      let message: MessageType =
+      const message: MessageType =
       {
-        gid: 5,
+        gid: gid,
         time: time,
-        sender: "Ashhad",
+        sender: sender,
         text: text.trim()
       } ;
 
@@ -85,23 +88,23 @@ function Chats(): JSX.Element
   return (
   <>
     <Head>
-      <title> Chats </title>
+      <title> Chat | WhatsChat </title>
 
-      <meta name="description" content="Chats" />
-      <meta name="keywords" content="Chats" />
+      <meta name="description" content="WhatsChat Chat" />
+      <meta name="keywords" content="WhatsChat, Chat" />
     </Head>
 
     <div className={ "container-fluid d-flex justify-content-between align-items-center " + styles.chatNav }>
       <div className="d-flex justify-content-center align-items-center">
 
-        <Link href="/" className={ styles.chatLink }>
+        <Link href="/dashboard" className={ styles.chatLink }>
           <i className="fas fa-chevron-circle-left"></i>
         </Link>
 
-        <p className={ styles.chatName }> Syed Muhammad Khizer </p>
+        <p className={ styles.chatName }> { receiver } </p>
       </div>
       <Image
-        src={ receiver }
+        src={ receiverImg }
         alt="Avatar"
         draggable="false"
         placeholder="empty"
@@ -141,5 +144,5 @@ function Chats(): JSX.Element
   )
 }
 
-// Export Chats
-export default Chats ;
+// Export Chat
+export default Chat ;

@@ -4,9 +4,18 @@ interface MessageType
   mid?: number ;
   gid?: number ;
   time: string ;
-  sender: string ;
+  sender: number ;
   text: string ;
 }
 
-// Export
-export type { MessageType } ;
+// User Interface
+interface UserType
+{
+  uid?: string ;
+  name?: string ;
+  email: string ;
+  password: string ;
+}
+
+// Exports
+export type { MessageType, UserType } ;
