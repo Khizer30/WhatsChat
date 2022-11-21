@@ -134,7 +134,7 @@
   border-style: none ;
   border-radius: 30px ;
   background: var(--bs-gray-900) ;
-  padding-left: 7px ;
+  padding-left: 7.5px ;
   color: var(--bs-gray-300) !important ;
 
   transition: all 250ms ease-in ;

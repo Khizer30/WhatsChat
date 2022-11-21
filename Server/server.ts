@@ -13,7 +13,7 @@ dotenv.config() ;
 
 // App
 const app: Express = express() ;
-const port: number = 8080 ;
+const port: number = 8000 ;
 
 // Middleware
 app.use(cors()) ;
@@ -31,7 +31,7 @@ let stack: Message[] = [] ;
 io.on("connection", (socket) =>
 {
   // Listen Start
-  socket.once("start", async (gid: number) =>
+  socket.on("start", async (gid: number) =>
   {
     stack = await readMessages(gid) ;
 

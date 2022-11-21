@@ -4,10 +4,10 @@ import Image from "next/image" ;
 import Link from "next/link" ;
 import { io } from "socket.io-client" ;
 // ...
-import Message from "../components/Message" ;
-import type { MessageType } from "../components/Interfaces" ;
-import styles from "../styles/chats.module.css" ;
-import receiverImg from "../public/images/avatar_3.webp" ;
+import Message from "components/Message" ;
+import type { MessageType, UserType } from "components/Interfaces" ;
+import styles from "styles/chat.module.css" ;
+import receiverImg from "images/avatar_3.webp" ;
 
 // Chat
 function Chat(): JSX.Element
@@ -16,9 +16,21 @@ function Chat(): JSX.Element
   const socket = io(process.env.NEXT_PUBLIC_URL!) ;
   const [text, setText] = useState<string>("") ;
   const [stack, setStack] = useState<MessageType[]>([]) ;
-  const gid: number = 5 ;
-  const sender: number = 3 ;
-  const receiver: string = "Imran Khan" ;
+
+  // Session
+  const gid: number = 6 ;
+  const sender: UserType =
+  {
+    uid: 5,
+    name: "Syed Muhammad Khizer",
+    email: "syed.khizer30@gmail.com"
+  } ;
+  const receiver: UserType =
+  {
+    uid: 6,
+    name: "Uzma Syed",
+    email: "uzsy4988@gmail.com"
+  } ;
 
   // Handle Change
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void
@@ -73,7 +85,7 @@ function Chat(): JSX.Element
       {
         gid: gid,
         time: time,
-        sender: sender,
+        sender: sender.uid,
         text: text.trim()
       } ;
 
@@ -101,7 +113,7 @@ function Chat(): JSX.Element
           <i className="fas fa-chevron-circle-left"></i>
         </Link>
 
-        <p className={ styles.chatName }> { receiver } </p>
+        <p className={ styles.chatName }> { receiver.name } </p>
       </div>
       <Image
         src={ receiverImg }

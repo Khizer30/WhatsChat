@@ -8,14 +8,20 @@ interface MessageType
   text: string ;
 }
 
-// User Interface
-interface UserType
+// Log In Interface
+interface LoginType
 {
-  uid?: string ;
-  name?: string ;
   email: string ;
   password: string ;
 }
 
+// User Interface
+interface UserType
+{
+  uid: number ;
+  email: string ;
+  name: string ;
+}
+
 // Exports
-export type { MessageType, UserType } ;
+export type { MessageType, LoginType, UserType } ;

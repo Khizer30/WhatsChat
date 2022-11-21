@@ -3,25 +3,27 @@ import Head from "next/head" ;
 import Image from "next/image" ;
 import Link from "next/link" ;
 import { useRouter } from "next/router" ;
+import { signIn } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
+import type { SignInResponse } from "next-auth/react" ;
 // ...
-import { userObj } from "../components/Library" ;
-import type { UserType } from "../components/Interfaces" ;
-import styles from "../styles/login.module.css" ;
-import logo from "../public/images/logo.webp" ;
+import { loginObj } from "components/Library" ;
+import type { LoginType } from "components/Interfaces" ;
+import styles from "styles/login.module.css" ;
+import logo from "images/logo_black.webp" ;
 
 // Login
 function Login(): JSX.Element
 {
   // Variables
-  const [inputs, setInputs] = useState<UserType>(userObj) ;
+  const [inputs, setInputs] = useState<LoginType>(loginObj) ;
   const [mes, setMes] = useState<string>("") ;
   const router: NextRouter = useRouter() ;
 
   // Handle Change
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void
   {
-    setInputs((values: UserType) => ({ ...values, [event.target.name]: event.target.value })) ;
+    setInputs((values: LoginType) => ({ ...values, [event.target.name]: event.target.value })) ;
   }
 
   // Handle Submit
@@ -32,34 +34,27 @@ function Login(): JSX.Element
   }
 
   // Check It
-  function checkIt(it: string, len: number, reg?: string): boolean
+  function checkIt(it: string, len: number, reg: string): boolean
   {
     if (it !== "")
     {
       if (it.length <= len)
       {
-        if (reg)
-        {
-          let pattern: RegExp = new RegExp(reg) ;
+        let pattern: RegExp = new RegExp(reg) ;
 
-          if (pattern.test(it))
-          {
-            return true ;
-          }
-          else
-          {
-            setMes("Email / Password is Invalid") ;
-            return false ;
-          }
+        if (pattern.test(it))
+        {
+          return true ;
         }
         else
         {
-          return true ;
+          setMes("Invalid Email OR Password") ;
+          return false ;
         }
       }
       else
       {
-        setMes("Email / Password is Invalid") ;
+        setMes("Invalid Email OR Password") ;
         return false ;
       }
     }
@@ -78,7 +73,16 @@ function Login(): JSX.Element
     if (checkIt(inputs.email.trim(), 100, "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com)\\b") &&
     checkIt(inputs.password.trim(), 100, "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&=])[A-Za-z\\d@$!%*#?&=]{8,}$"))
     {
+      const response: SignInResponse | undefined = await signIn("credentials", { email: inputs.email.trim(), password: inputs.password.trim(), redirect: false }) ;
 
+      if (response?.ok)
+      {
+        router.replace("/chat") ;
+      }
+      else
+      {
+        setMes("Invalid User") ;
+      }
     }
   }
 
@@ -104,7 +108,7 @@ function Login(): JSX.Element
 
         <form method="post" target="_self" encType="application/x-www-form-urlencoded" className="d-flex flex-column justify-content-center align-items-center w-100"
         onSubmit={ handleSubmit } autoComplete="off" noValidate>
-        
+
         { mes &&
           <span className={ styles.logInErr }> { mes } </span>
         }

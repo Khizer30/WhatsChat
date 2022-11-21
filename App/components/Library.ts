@@ -1,14 +1,12 @@
 // ...
-import type { UserType } from "./Interfaces" ;
+import type { LoginType } from "components/Interfaces" ;
 
-// User Object
-const userObj: UserType =
+// Log In Object
+const loginObj: LoginType =
 {
-  uid: "",
-  name: "",
   email: "",
   password: ""
 } ;
 
-// Exports
-export { userObj } ;
+// Export
+export { loginObj } ;
