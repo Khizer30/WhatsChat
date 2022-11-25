@@ -3,7 +3,7 @@ import Head from "next/head" ;
 import Image from "next/image" ;
 import Link from "next/link" ;
 import { useRouter } from "next/router" ;
-import { signIn } from "next-auth/react" ;
+import { useSession, signIn } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
 import type { SignInResponse } from "next-auth/react" ;
 // ...
@@ -16,9 +16,26 @@ import logo from "images/logo_black.webp" ;
 function Login(): JSX.Element
 {
   // Variables
+  const { status } = useSession() ;
   const [inputs, setInputs] = useState<LoginType>(loginObj) ;
   const [mes, setMes] = useState<string>("") ;
   const router: NextRouter = useRouter() ;
+
+  // Redirect
+  if (status === "loading")
+  {
+    return (
+    <>
+      <h1> Loading... </h1>
+    </>
+    )
+  }
+  else if (status === "authenticated")
+  {
+    router.replace("/dashboard") ;
+
+    return <></>
+  }
 
   // Handle Change
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void
@@ -30,7 +47,6 @@ function Login(): JSX.Element
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void
   {
     event.preventDefault() ;
-    send() ;
   }
 
   // Check It
@@ -73,15 +89,11 @@ function Login(): JSX.Element
     if (checkIt(inputs.email.trim(), 100, "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com)\\b") &&
     checkIt(inputs.password.trim(), 100, "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&=])[A-Za-z\\d@$!%*#?&=]{8,}$"))
     {
-      const response: SignInResponse | undefined = await signIn("credentials", { email: inputs.email.trim(), password: inputs.password.trim(), redirect: false }) ;
+      const response: SignInResponse | undefined = await signIn("credentials", { email: inputs.email.trim(), password: inputs.password.trim(), redirect: false, callbackUrl: "/dashboard" }) ;
 
-      if (response?.ok)
+      if (!response?.ok)
       {
-        router.replace("/chat") ;
-      }
-      else
-      {
-        setMes("Invalid User") ;
+        setMes("User Doesn't Exist") ;
       }
     }
   }
@@ -107,7 +119,7 @@ function Login(): JSX.Element
         />
 
         <form method="post" target="_self" encType="application/x-www-form-urlencoded" className="d-flex flex-column justify-content-center align-items-center w-100"
-        onSubmit={ handleSubmit } autoComplete="off" noValidate>
+        onSubmit={ handleSubmit } autoComplete="off">
 
         { mes &&
           <span className={ styles.logInErr }> { mes } </span>

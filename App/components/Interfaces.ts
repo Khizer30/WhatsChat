@@ -23,5 +23,12 @@ interface UserType
   name: string ;
 }
 
+// Res Interface
+interface ResType
+{
+  code: number ;
+  message: string ;
+}
+
 // Exports
-export type { MessageType, LoginType, UserType } ;
+export type { MessageType, LoginType, UserType, ResType } ;

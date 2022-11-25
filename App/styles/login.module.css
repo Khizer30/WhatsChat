@@ -51,22 +51,23 @@
   margin: 0.5rem 0rem ;
   border-style: none ;
 
-  transition: all 250ms ease-in ;
+  transition: all 200ms ease-in ;
 }
 
 .logInBtn:hover
 {
-  transform: scale(0.90) ;
+  transform: scale(0.95) ;
 }
 
 .logInBtn:focus
 {
+  transform: scale(0.95) ;
   outline: none ;
 }
 
 .logInBtn:active
 {
-  transform: scale(0.95) ;
+  transform: scale(0.90) ;
 }
 
 .logInLink 
@@ -78,7 +79,7 @@
   font-weight: bold ;
   margin: 0.5rem 0rem ;
 
-  transition: all 300ms ease-in ;
+  transition: all 200ms ease-in ;
 }
 
 .logInLink:hover
@@ -88,12 +89,13 @@
 
 .logInLink:focus
 {
+  transform: scale(1.05) ;
   outline: none ;
 }
 
 .logInLink:active
 {
-  transform: scale(1.00) ;
+  transform: scale(1.10) ;
 }
 
 .logInErr 
