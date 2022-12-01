@@ -5,7 +5,7 @@ import styles from "styles/chat.module.css" ;
 import userImg from "images/avatar_1.webp" ;
 
 // Message
-function Message({ time, sender, text }: MessageType): JSX.Element
+function Message({ time, text }: MessageType): JSX.Element
 {
   return (
   <>

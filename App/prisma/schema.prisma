@@ -1,42 +1,42 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider             = "mysql"
-  url                  = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
-  uid      Int           @id @unique @default(autoincrement())
-  name     String        @default("")
-  email    String        @unique @default("")
-  password String        @default("")
-  groups   UserToGroup[]
+  uid      Int       @id @unique @default(autoincrement())
+  name     String    @default("")
+  email    String    @unique @default("")
+  password String    @default("")
+  groups   Group[]
+  messages Message[]
+
+  @@index([uid])
 }
 
 model Group {
-  gid      Int           @id @unique @default(autoincrement())
-  users    UserToGroup[]
+  gid      Int       @id @unique @default(autoincrement())
+  users    User[]
   messages Message[]
+
+  @@index([gid])
 }
 
 model Message {
-  group  Group  @relation(fields: [gid], references: [gid], onDelete: Cascade)
+  gid    Group  @relation(fields: [group], references: [gid], onDelete: Cascade)
+  uid    User   @relation(fields: [sender], references: [uid], onDelete: Cascade)
   mid    Int    @id @unique @default(autoincrement())
-  gid    Int
+  group  Int
+  sender Int
   time   String @default("00:00")
-  sender Int    @default(0)
   text   String @default("")
-}
 
-model UserToGroup {
-  group Group @relation(fields: [gid], references: [gid], onDelete: NoAction)
-  user  User  @relation(fields: [uid], references: [uid], onDelete: Cascade)
-  gid   Int
-  uid   Int
-
-  @@id([gid, uid])
+  @@index([mid])
+  @@index([group])
+  @@index([sender])
 }

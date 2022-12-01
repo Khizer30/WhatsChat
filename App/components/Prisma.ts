@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client" ;
+import { PrismaClient, Group } from "@prisma/client" ;
 // ...
 import type { LoginType, UserType } from "components/Interfaces" ;
 
@@ -66,6 +66,69 @@ async function fetchContacts(): Promise<UserType[]>
   return contacts ;
 }
 
+// Fetch Group
+async function fetchGroup(sender: number, reciever: number): Promise<number>
+{
+  let group: Group = { gid: 0 } ;
+
+  try
+  {
+    let tempGroup: Group | null = null ;
+
+    // Find
+    tempGroup = await prisma.group.findFirst({
+      where:
+      {
+        AND:
+        [
+          {
+            users:
+            {
+              some: { uid: sender }
+            }
+          },
+          {
+            users:
+            {
+              some: { uid: reciever }
+            }
+          }
+        ]
+      }
+    }) ;
+
+    // Create
+    if (!tempGroup)
+    {
+      tempGroup = await prisma.group.create({
+        data:
+        {
+          users:
+          {
+            connect:
+            [
+              { uid: sender },
+              { uid: reciever }
+            ]
+          }
+        }
+      }) ;
+    }
+
+    group = tempGroup ;
+  }
+  catch(err: unknown)
+  {
+    console.log(err) ;
+  }
+  finally
+  {
+    await prisma.$disconnect() ;
+  }
+
+  return group.gid ;
+}
+
 // Exports
 export default prisma ;
-export { fetchUser, fetchContacts } ;
+export { fetchUser, fetchContacts, fetchGroup } ;

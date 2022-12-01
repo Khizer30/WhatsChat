@@ -5,7 +5,7 @@ import { createServer } from "http" ;
 import type { Express } from "express" ;
 import type { Message } from "@prisma/client" ;
 // ...
-import { addMessage, readMessages } from "./lib/prisma" ;
+import { addMessage, readMessages } from "./prisma" ;
 
 // Dot Env
 import * as dotenv from "dotenv" ;
@@ -43,7 +43,7 @@ io.on("connection", (socket) =>
   socket.on("message", async (message: Message) =>
   {
     await addMessage(message) ;
-    stack = await readMessages(message.gid) ;
+    stack = await readMessages(message.group) ;
   
     // Emit Updates
     socket.emit("updates", stack) ;

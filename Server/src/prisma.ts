@@ -13,7 +13,7 @@ async function addMessage(x: Message): Promise<void>
     await prisma.message.create({
       data:
       {
-        gid: x.gid,
+        group: x.group,
         time: x.time,
         sender: x.sender,
         text: x.text
@@ -40,7 +40,7 @@ async function readMessages(gid: number): Promise<Message[]>
     messages = await prisma.message.findMany({
       where:
       {
-        gid: gid
+        group: gid
       }
     }) ;
   }

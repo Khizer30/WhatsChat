@@ -2,20 +2,57 @@ import { useState, useEffect } from "react" ;
 import Head from "next/head" ;
 import Image from "next/image" ;
 import Link from "next/link" ;
+import { useRouter } from "next/router" ;
+import { useSession } from "next-auth/react" ;
 import { io } from "socket.io-client" ;
+import type { NextRouter } from "next/router" ;
 // ...
 import Message from "components/Message" ;
 import type { MessageType, UserType } from "components/Interfaces" ;
 import styles from "styles/chat.module.css" ;
-import receiverImg from "images/avatar_3.webp" ;
+import receiverImg from "images/avatar_2.webp" ;
 
 // Chat
 function Chat(): JSX.Element
 {
   // Variables
-  const socket = io(process.env.NEXT_PUBLIC_URL!) ;
+  const { data, status } = useSession() ;
+  const [user, setUser] = useState<UserType | null>(null) ;
   const [text, setText] = useState<string>("") ;
   const [stack, setStack] = useState<MessageType[]>([]) ;
+  const socket = io(process.env.NEXT_PUBLIC_URL!) ;
+  const router: NextRouter = useRouter() ;
+
+  // Set User
+  useEffect(() =>
+  {
+    if (data?.user?.name)
+    {
+      setUser(JSON.parse(data.user.name)) ;
+    }
+  }, [status]) ;
+
+  // Start Socket
+  useEffect(() =>
+  {
+    socket.emit("start", gid) ;
+  }, []) ;
+
+  // Redirect
+  if (status === "loading")
+  {
+    return (
+    <>
+      <h1 style={{ color: "white" }}> Loading... </h1>
+    </>
+    )
+  }
+  else if (status === "unauthenticated")
+  {
+    router.replace("/auth/login") ;
+
+    return <></>
+  }
 
   // Session
   const gid: number = 6 ;
@@ -52,12 +89,6 @@ function Chat(): JSX.Element
       <Message key={ x.mid } time={ x.time } sender={ x.sender } text={ x.text } />
     )
   }
-
-  // Start
-  useEffect(() =>
-  {
-    socket.emit("start", gid) ;
-  }, []) ;
 
   // Listen Updates
   socket.on("updates", (args: MessageType[]) =>
@@ -134,6 +165,7 @@ function Chat(): JSX.Element
     <div className={ "container-fluid d-flex justify-content-center align-items-center " + styles.inputDiv }>
       <form method="post" target="_self" encType="application/x-www-form-urlencoded" className="d-flex justify-content-center align-items-center width95"
       onSubmit={ handleSubmit } autoComplete="off" noValidate>
+        
         <input 
           name="text"
           type="text"
@@ -150,6 +182,7 @@ function Chat(): JSX.Element
         <button onClick={ send } type="button" className={ "d-flex justify-content-center align-items-center " + styles.inputBtn }>
           <i className={ "fas fa-play " + styles.btnIcon }></i>
         </button>
+
       </form>
     </div>
   </>

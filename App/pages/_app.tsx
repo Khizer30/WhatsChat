@@ -8,7 +8,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps): JSX
 {
   return (
   <>
-    <SessionProvider session={ session } refetchOnWindowFocus={ true }>
+    <SessionProvider session={ session } refetchOnWindowFocus={ false }>
       <Component { ...pageProps } />
     </SessionProvider>
   </>

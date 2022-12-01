@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react" ;
+import Head from "next/head" ;
 import { useRouter } from "next/router" ;
 import { useSession, signOut } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
 // ...
 import { fetchContacts } from "components/Prisma" ;
-import type { UserType } from "components/Interfaces" ;
+import { fetchPost } from "components/Library" ;
+import type { UserType, GroupReqType, ResType } from "components/Interfaces" ;
 
 // Props
 interface Props
@@ -43,7 +45,7 @@ function Dashboard({ allContacts }: Props): JSX.Element
   {
     return (
     <>
-      <h1> Loading... </h1>
+      <h1 style={{ color: "white" }}> Loading... </h1>
     </>
     )
   }
@@ -61,9 +63,17 @@ function Dashboard({ allContacts }: Props): JSX.Element
   }
 
   // Start Chat
-  function startChat(uid: number): void
+  async function startChat(uid: number): Promise<void>
   {
-    console.log(uid) ;
+    const data: GroupReqType =
+    {
+      sender: user!.uid,
+      reciever: uid
+    } ;
+
+    const res: ResType = await fetchPost("/api/group", data) ;
+
+    console.log(res.message) ;
   }
 
   // Contacts Mapper
@@ -89,6 +99,13 @@ function Dashboard({ allContacts }: Props): JSX.Element
 
   return (
   <>
+    <Head>
+      <title> Dashboard | WhatsChat </title>
+
+      <meta name="description" content="WhatsChat Dashboard" />
+      <meta name="keywords" content="WhatsChat, Dashboard" />
+    </Head>
+
     <button onClick={ logOut } type="button"> Sign Out </button>
     <br /> <br />
 

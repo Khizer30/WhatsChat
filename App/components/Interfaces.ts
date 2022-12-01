@@ -3,8 +3,8 @@ interface MessageType
 {
   mid?: number ;
   gid?: number ;
-  time: string ;
   sender: number ;
+  time: string ;
   text: string ;
 }
 
@@ -23,6 +23,13 @@ interface UserType
   name: string ;
 }
 
+// Group Request Interface
+interface GroupReqType
+{
+  sender: number ;
+  reciever: number ;
+}
+
 // Res Interface
 interface ResType
 {
@@ -31,4 +38,4 @@ interface ResType
 }
 
 // Exports
-export type { MessageType, LoginType, UserType, ResType } ;
+export type { MessageType, LoginType, UserType, GroupReqType, ResType } ;

@@ -26,7 +26,6 @@ const authOptions: NextAuthOptions =
       async authorize(credentials, req): Promise<DefaultUser | null>
       {
         let user: DefaultUser | null = null ;
-        
         const result: UserType | null = await fetchUser({ email: credentials!.email, password: credentials!.password }) ;
 
         if (result)
