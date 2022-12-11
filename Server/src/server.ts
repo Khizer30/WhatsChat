@@ -5,7 +5,8 @@ import { createServer } from "http" ;
 import type { Express } from "express" ;
 import type { Message } from "@prisma/client" ;
 // ...
-import { addMessage, readMessages } from "./prisma" ;
+import { addMessage, readMessages } from "./library" ;
+import type { MessageType } from "./Interfaces" ;
 
 // Dot Env
 import * as dotenv from "dotenv" ;
@@ -24,34 +25,30 @@ const httpServer = createServer(app) ;
 // Socket IO
 const io = new Server(httpServer, { cors: { origin: process.env.ORIGIN! } }) ;
 
-// Stack
-let stack: Message[] = [] ;
-
 // Listen Connection
-io.on("connection", (socket) =>
+io.on("connection", async (socket) =>
 {
   // Listen Start
   socket.on("start", async (gid: number) =>
   {
-    stack = await readMessages(gid) ;
+    const messages: Message[] = await readMessages(gid) ;
 
     // Emit Updates
-    socket.emit("updates", stack) ;
-  })
+    socket.broadcast.emit("updates", messages) ;
+  }) ;
 
   // Listen Message
-  socket.on("message", async (message: Message) =>
+  socket.on("message", async (message: MessageType) =>
   {
-    await addMessage(message) ;
-    stack = await readMessages(message.group) ;
+    const messages: Message[] = await addMessage(message) ;
   
     // Emit Updates
-    socket.emit("updates", stack) ;
-  })
+    socket.broadcast.emit("updates", messages) ;
+  }) ;
 }) ;
 
 // Listen
 httpServer.listen(port, () =>
 {
   console.log(`Server Started on Port ${ port }`) ;
-})
+}) ;

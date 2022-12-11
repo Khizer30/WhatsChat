@@ -1,9 +1,7 @@
-import { PrismaClient, Group } from "@prisma/client" ;
+import { Group } from "@prisma/client" ;
 // ...
+import prisma from "config/prisma" ;
 import type { LoginType, UserType } from "components/Interfaces" ;
-
-// Prisma
-const prisma = new PrismaClient() ;
 
 // Fetch User
 async function fetchUser(data: LoginType): Promise<UserType | null>
@@ -22,6 +20,7 @@ async function fetchUser(data: LoginType): Promise<UserType | null>
       {
         uid: true,
         name: true,
+        gender: true,
         email: true
       }
     }) ;
@@ -50,6 +49,7 @@ async function fetchContacts(): Promise<UserType[]>
       {
         uid: true,
         name: true,
+        gender: true,
         email: true
       }
     }) ;
@@ -75,7 +75,7 @@ async function fetchGroup(sender: number, reciever: number): Promise<number>
   {
     let tempGroup: Group | null = null ;
 
-    // Find
+    // Find Group
     tempGroup = await prisma.group.findFirst({
       where:
       {
@@ -97,7 +97,7 @@ async function fetchGroup(sender: number, reciever: number): Promise<number>
       }
     }) ;
 
-    // Create
+    // Create Group
     if (!tempGroup)
     {
       tempGroup = await prisma.group.create({
@@ -130,5 +130,4 @@ async function fetchGroup(sender: number, reciever: number): Promise<number>
 }
 
 // Exports
-export default prisma ;
 export { fetchUser, fetchContacts, fetchGroup } ;

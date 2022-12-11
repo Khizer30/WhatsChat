@@ -1,7 +1,7 @@
-import { useState } from "react" ;
 import Head from "next/head" ;
 import Image from "next/image" ;
 import Link from "next/link" ;
+import { useState, useEffect } from "react" ;
 import { useRouter } from "next/router" ;
 import { useSession, signIn } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
@@ -17,25 +17,23 @@ function Login(): JSX.Element
 {
   // Variables
   const { status } = useSession() ;
+  const [loading, setLoading] = useState<boolean>(true) ;
   const [inputs, setInputs] = useState<LoginType>(loginObj) ;
   const [mes, setMes] = useState<string>("") ;
   const router: NextRouter = useRouter() ;
 
   // Redirect
-  if (status === "loading")
+  useEffect(() =>
   {
-    return (
-    <>
-      <h1 style={{ color: "white" }}> Loading... </h1>
-    </>
-    )
-  }
-  else if (status === "authenticated")
-  {
-    router.replace("/dashboard") ;
-
-    return <></>
-  }
+    if (status === "authenticated")
+    {
+      router.replace("/dashboard") ;
+    }
+    else if (status === "unauthenticated")
+    {
+      setLoading(false) ;
+    }
+  }, [status]) ;
 
   // Handle Change
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void
@@ -91,11 +89,28 @@ function Login(): JSX.Element
     {
       const response: SignInResponse | undefined = await signIn("credentials", { email: inputs.email.trim(), password: inputs.password.trim(), redirect: false, callbackUrl: "/dashboard" }) ;
 
-      if (!response?.ok)
+      if (response && !response.ok)
       {
         setMes("User Doesn't Exist") ;
       }
     }
+  }
+
+  // Loading Screen
+  if (loading)
+  {
+    return (
+    <>
+      <Head>
+        <title> Redirect </title>
+
+        <meta name="description" content="WhatsChat Redirect" />
+        <meta name="keywords" content="WhatsChat, Redirect" />
+      </Head>
+
+      <h1 style={{ color: "white" }}> Loading... </h1>
+    </>
+    )
   }
 
   return (

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react" ;
 import Head from "next/head" ;
+import { useState, useEffect } from "react" ;
 import { useRouter } from "next/router" ;
 import { useSession, signOut } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
@@ -11,50 +11,44 @@ import type { UserType, GroupReqType, ResType } from "components/Interfaces" ;
 // Props
 interface Props
 {
-  allContacts: UserType[] ;
+  contacts: UserType[] ;
 }
 
 // SSR
 export async function getServerSideProps() 
 {
-  const allContacts: UserType[] = await fetchContacts() ;
+  const contacts: UserType[] = await fetchContacts() ;
 
-  return { props: { allContacts } } ;
+  return { props: { contacts } } ;
 }
 
 // Dashboard
-function Dashboard({ allContacts }: Props): JSX.Element
+function Dashboard({ contacts }: Props): JSX.Element
 {
   // Variables
   const { data, status } = useSession() ;
   const [user, setUser] = useState<UserType | null>(null) ;
-  const [contacts, setContacts] = useState<UserType[]>(allContacts) ;
+  const [loading, setLoading] = useState<boolean>(true) ;
   const router: NextRouter = useRouter() ;
 
-  // Set User
+  // Redirect
   useEffect(() =>
   {
-    if (data?.user?.name)
+    if (status === "unauthenticated")
     {
-      setUser(JSON.parse(data.user.name)) ;
+      router.replace("/auth/login") ;
+    }
+    else if (status === "authenticated")
+    {
+      if (data?.user?.name)
+      {
+        sessionStorage.clear() ;
+        
+        setUser(JSON.parse(data.user.name)) ;
+        setLoading(false) ;
+      }
     }
   }, [status]) ;
-
-  // Redirect
-  if (status === "loading")
-  {
-    return (
-    <>
-      <h1 style={{ color: "white" }}> Loading... </h1>
-    </>
-    )
-  }
-  else if (status === "unauthenticated")
-  {
-    router.replace("/auth/login") ;
-
-    return <></>
-  }
 
   // Log Out
   async function logOut(): Promise<void>
@@ -63,38 +57,68 @@ function Dashboard({ allContacts }: Props): JSX.Element
   }
 
   // Start Chat
-  async function startChat(uid: number): Promise<void>
+  async function startChat(receiver: UserType): Promise<void>
   {
-    const data: GroupReqType =
+    if (user)
     {
-      sender: user!.uid,
-      reciever: uid
-    } ;
+      const groupData: GroupReqType =
+      {
+        sender: user.uid,
+        receiver: receiver.uid
+      } ;
+  
+      const res: ResType = await fetchPost("/api/group", groupData) ;
+      const gid: string = res.message ;
 
-    const res: ResType = await fetchPost("/api/group", data) ;
-
-    console.log(res.message) ;
+      sessionStorage.setItem("receiver", JSON.stringify(receiver)) ;
+  
+      router.push(`/chat/${ gid }`) ;
+    }
   }
 
   // Contacts Mapper
   function contactsMapper(x: UserType): JSX.Element
   {
     return (
-      <button onClick={ () => startChat(x.uid) } key={ x.uid } type="button"> { x.name } </button>
+      <button key={ x.uid } onClick={ () => startChat(x) } type="button"> { x.name } </button>
     )
   }
 
   // Filter User
   function filterUser(x: UserType): boolean
   {
-    if (user?.uid === x.uid)
+    if (user)
     {
-      return false ;
+      if (user.uid === x.uid)
+      {
+        return false ;
+      }
+      else
+      {
+        return true ;
+      }
     }
     else
     {
-      return true ;
+      return false ;
     }
+  }
+
+  // Loading Screen
+  if (loading)
+  {
+    return (
+    <>
+      <Head>
+        <title> Redirect </title>
+
+        <meta name="description" content="WhatsChat Redirect" />
+        <meta name="keywords" content="WhatsChat, Redirect" />
+      </Head>
+
+      <h1 style={{ color: "white" }}> Loading... </h1>
+    </>
+    )
   }
 
   return (

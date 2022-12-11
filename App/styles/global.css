@@ -48,12 +48,12 @@ a:hover
 
 .scale:hover
 {
-  transform: scale(0.93) ;
+  transform: scale(0.90) ;
 }
 
 .scale:active
 {
-  transform: scale(0.97) ;
+  transform: scale(0.95) ;
 }
 
 /* Footer */

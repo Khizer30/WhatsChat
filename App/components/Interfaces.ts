@@ -3,7 +3,7 @@ interface MessageType
 {
   mid?: number ;
   gid?: number ;
-  sender: number ;
+  uid: number ;
   time: string ;
   text: string ;
 }
@@ -19,15 +19,16 @@ interface LoginType
 interface UserType
 {
   uid: number ;
-  email: string ;
   name: string ;
+  gender: string ;
+  email: string ;
 }
 
 // Group Request Interface
 interface GroupReqType
 {
   sender: number ;
-  reciever: number ;
+  receiver: number ;
 }
 
 // Res Interface

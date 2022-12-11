@@ -26,21 +26,31 @@ const authOptions: NextAuthOptions =
       async authorize(credentials, req): Promise<DefaultUser | null>
       {
         let user: DefaultUser | null = null ;
-        const result: UserType | null = await fetchUser({ email: credentials!.email, password: credentials!.password }) ;
+        let data: UserType | null = null ;
 
-        if (result)
+        if (credentials)
+        {
+          data = await fetchUser({ email: credentials.email, password: credentials.password }) ;
+        }
+
+        if (data)
         {
           user =
           {
-            id: `${ result.uid }`,
-            name: JSON.stringify(result)
+            id: `${ data.uid }`,
+            name: JSON.stringify(data)
           } ;
         }
 
         return user ;
       }
     })
-  ]
+  ],
+  session:
+  {
+    strategy: "jwt",
+    maxAge: 60 * 60
+  }
 } ;
 
 // Export

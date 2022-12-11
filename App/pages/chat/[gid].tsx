@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react" ;
 import Head from "next/head" ;
 import Image from "next/image" ;
 import Link from "next/link" ;
+import { useState, useEffect } from "react" ;
 import { useRouter } from "next/router" ;
 import { useSession } from "next-auth/react" ;
-import { io } from "socket.io-client" ;
+import io from "socket.io-client" ;
 import type { NextRouter } from "next/router" ;
 // ...
 import Message from "components/Message" ;
@@ -18,56 +18,53 @@ function Chat(): JSX.Element
   // Variables
   const { data, status } = useSession() ;
   const [user, setUser] = useState<UserType | null>(null) ;
+  const [receiver, setReceiver] = useState<UserType | null>(null) ;
+  const [loading, setLoading] = useState<boolean>(true) ;
   const [text, setText] = useState<string>("") ;
-  const [stack, setStack] = useState<MessageType[]>([]) ;
-  const socket = io(process.env.NEXT_PUBLIC_URL!) ;
+  const [messages, setMessages] = useState<MessageType[]>([]) ;
   const router: NextRouter = useRouter() ;
-
-  // Set User
-  useEffect(() =>
-  {
-    if (data?.user?.name)
-    {
-      setUser(JSON.parse(data.user.name)) ;
-    }
-  }, [status]) ;
-
-  // Start Socket
-  useEffect(() =>
-  {
-    socket.emit("start", gid) ;
-  }, []) ;
+  const { gid } = router.query ;
+  const socket = io(process.env.NEXT_PUBLIC_URL!) ;
 
   // Redirect
-  if (status === "loading")
+  useEffect(() =>
   {
-    return (
-    <>
-      <h1 style={{ color: "white" }}> Loading... </h1>
-    </>
-    )
-  }
-  else if (status === "unauthenticated")
-  {
-    router.replace("/auth/login") ;
+    if (status === "unauthenticated")
+    {
+      router.replace("/auth/login") ;
+    }
+    else if (status === "authenticated")
+    {
+      const sessionData: string | null = sessionStorage.getItem("receiver") ;
 
-    return <></>
-  }
+      if (data?.user?.name && sessionData)
+      {
+        // WebSocket Listen Updates
+        socket.on("updates", (args: MessageType[]) =>
+        {
+          setMessages(args) ;
+        }) ;
 
-  // Session
-  const gid: number = 6 ;
-  const sender: UserType =
+        setUser(JSON.parse(data.user.name)) ;
+        setReceiver(JSON.parse(sessionData)) ;
+        setLoading(false) ;
+      }
+    }
+
+    return () =>
+    {
+      socket.off("updates") ;
+    } ;
+  }, [status]) ;
+
+  // Start WebSockets
+  useEffect(() =>
   {
-    uid: 5,
-    name: "Syed Muhammad Khizer",
-    email: "syed.khizer30@gmail.com"
-  } ;
-  const receiver: UserType =
-  {
-    uid: 6,
-    name: "Uzma Syed",
-    email: "uzsy4988@gmail.com"
-  } ;
+    if (gid && !loading)
+    {
+      socket.emit("start", +gid) ;
+    }
+  }, [loading]) ;
 
   // Handle Change
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void
@@ -86,20 +83,14 @@ function Chat(): JSX.Element
   function messageMapper(x: MessageType): JSX.Element
   {
     return (
-      <Message key={ x.mid } time={ x.time } sender={ x.sender } text={ x.text } />
+      <Message key={ x.mid } uid={ x.uid } time={ x.time } text={ x.text } />
     )
   }
-
-  // Listen Updates
-  socket.on("updates", (args: MessageType[]) =>
-  {
-    setStack(args) ;
-  })
 
   // Send
   function send(): void
   {
-    if (text !== "" && text.trim().length <= 100)
+    if ((text !== "") && (text.trim().length <= 100) && user && gid)
     {
       let tempDate: Date = new Date() ;
       let temp: number = 0 ;
@@ -114,9 +105,9 @@ function Chat(): JSX.Element
 
       const message: MessageType =
       {
-        gid: gid,
+        gid: +gid,
+        uid: user.uid,
         time: time,
-        sender: sender.uid,
         text: text.trim()
       } ;
 
@@ -126,6 +117,23 @@ function Chat(): JSX.Element
       // Reset
       setText("") ;
     }
+  }
+
+  // Loading Screen
+  if (loading)
+  {
+    return (
+    <>
+      <Head>
+        <title> Redirect </title>
+
+        <meta name="description" content="WhatsChat Redirect" />
+        <meta name="keywords" content="WhatsChat, Redirect" />
+      </Head>
+
+      <h1 style={{ color: "white" }}> Loading... </h1>
+    </>
+    )
   }
 
   return (
@@ -144,7 +152,7 @@ function Chat(): JSX.Element
           <i className="fas fa-chevron-circle-left"></i>
         </Link>
 
-        <p className={ styles.chatName }> { receiver.name } </p>
+        <p className={ styles.chatName }> { receiver?.name } </p>
       </div>
       <Image
         src={ receiverImg }
@@ -158,7 +166,7 @@ function Chat(): JSX.Element
 
     <div className={ "container-fluid d-flex flex-column justify-content-end align-items-center justify-content-sm-end " + styles.messageDiv }>
     {
-      stack.map(messageMapper)
+      messages.map(messageMapper)
     }
     </div>
 

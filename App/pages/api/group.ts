@@ -5,10 +5,10 @@ import { createResponse } from "components/Library" ;
 import type { GroupReqType } from "components/Interfaces" ;
 
 // Group
-export default async (req: NextApiRequest, res:NextApiResponse) =>
+export default async (req: NextApiRequest, res: NextApiResponse) =>
 {
   const data: GroupReqType = req.body ;
-  const gid: number = await fetchGroup(data.sender, data.reciever) ;
+  const gid: number = await fetchGroup(data.sender, data.receiver) ;
 
   res.end(createResponse(100, `${ gid }`)) ;
 }

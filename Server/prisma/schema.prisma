@@ -11,6 +11,7 @@ datasource db {
 model User {
   uid      Int       @id @unique @default(autoincrement())
   name     String    @default("")
+  gender   String    @default("M")
   email    String    @unique @default("")
   password String    @default("")
   groups   Group[]
@@ -28,15 +29,15 @@ model Group {
 }
 
 model Message {
-  gid    Group  @relation(fields: [group], references: [gid], onDelete: Cascade)
-  uid    User   @relation(fields: [sender], references: [uid], onDelete: Cascade)
+  group  Group  @relation(fields: [gid], references: [gid], onDelete: Cascade)
+  sender User   @relation(fields: [uid], references: [uid], onDelete: Cascade)
   mid    Int    @id @unique @default(autoincrement())
-  group  Int
-  sender Int
+  gid    Int
+  uid    Int
   time   String @default("00:00")
   text   String @default("")
 
   @@index([mid])
-  @@index([group])
-  @@index([sender])
+  @@index([gid])
+  @@index([uid])
 }

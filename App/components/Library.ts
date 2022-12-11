@@ -26,7 +26,6 @@ async function fetchGet(url: string): Promise<ResType>
       "Content-Type": "application/json"
     }
   }) ;
-
   const res: ResType = await response.json() ;
 
   return res ;
@@ -45,7 +44,6 @@ async function fetchPost(url: string, data: any): Promise<ResType>
     },
     body: JSON.stringify(data)
   }) ;
-
   const res: ResType = await response.json() ;
 
   return res ;
