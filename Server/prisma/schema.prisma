@@ -11,7 +11,7 @@ datasource db {
 model User {
   uid      Int       @id @unique @default(autoincrement())
   name     String    @default("")
-  gender   String    @default("M")
+  image    Int       @default(1)
   email    String    @unique @default("")
   password String    @default("")
   groups   Group[]
@@ -34,6 +34,7 @@ model Message {
   mid    Int    @id @unique @default(autoincrement())
   gid    Int
   uid    Int
+  image  Int    @default(1)
   time   String @default("00:00")
   text   String @default("")
 

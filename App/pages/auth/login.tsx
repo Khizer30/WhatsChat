@@ -10,7 +10,7 @@ import type { SignInResponse } from "next-auth/react" ;
 import { loginObj } from "components/Library" ;
 import type { LoginType } from "components/Interfaces" ;
 import styles from "styles/login.module.css" ;
-import logo from "images/logo_black.webp" ;
+import logo from "images/logo.svg" ;
 
 // Login
 function Login(): JSX.Element

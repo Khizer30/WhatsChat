@@ -20,7 +20,7 @@ async function fetchUser(data: LoginType): Promise<UserType | null>
       {
         uid: true,
         name: true,
-        gender: true,
+        image: true,
         email: true
       }
     }) ;
@@ -49,7 +49,7 @@ async function fetchContacts(): Promise<UserType[]>
       {
         uid: true,
         name: true,
-        gender: true,
+        image: true,
         email: true
       }
     }) ;

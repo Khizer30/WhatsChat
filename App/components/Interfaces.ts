@@ -1,9 +1,9 @@
 // Message Interface
 interface MessageType
 {
-  mid?: number ;
-  gid?: number ;
+  gid: number ;
   uid: number ;
+  image: number ;
   time: string ;
   text: string ;
 }
@@ -20,7 +20,7 @@ interface UserType
 {
   uid: number ;
   name: string ;
-  gender: string ;
+  image: number ;
   email: string ;
 }
 

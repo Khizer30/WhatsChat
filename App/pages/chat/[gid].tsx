@@ -5,12 +5,13 @@ import { useState, useEffect } from "react" ;
 import { useRouter } from "next/router" ;
 import { useSession } from "next-auth/react" ;
 import io from "socket.io-client" ;
+import type { Message } from "@prisma/client" ;
 import type { NextRouter } from "next/router" ;
 // ...
-import Message from "components/Message" ;
+import avatars from "components/Avatars" ;
+import MessageBox from "components/MessageBox" ;
 import type { MessageType, UserType } from "components/Interfaces" ;
 import styles from "styles/chat.module.css" ;
-import receiverImg from "images/avatar_2.webp" ;
 
 // Chat
 function Chat(): JSX.Element
@@ -21,10 +22,10 @@ function Chat(): JSX.Element
   const [receiver, setReceiver] = useState<UserType | null>(null) ;
   const [loading, setLoading] = useState<boolean>(true) ;
   const [text, setText] = useState<string>("") ;
-  const [messages, setMessages] = useState<MessageType[]>([]) ;
+  const [messages, setMessages] = useState<Message[]>([]) ;
+  const socket = io(process.env.NEXT_PUBLIC_URL!) ;
   const router: NextRouter = useRouter() ;
   const { gid } = router.query ;
-  const socket = io(process.env.NEXT_PUBLIC_URL!) ;
 
   // Redirect
   useEffect(() =>
@@ -40,7 +41,7 @@ function Chat(): JSX.Element
       if (data?.user?.name && sessionData)
       {
         // WebSocket Listen Updates
-        socket.on("updates", (args: MessageType[]) =>
+        socket.on("updates", (args: Message[]) =>
         {
           setMessages(args) ;
         }) ;
@@ -80,10 +81,10 @@ function Chat(): JSX.Element
   }
 
   // Message Mapper
-  function messageMapper(x: MessageType): JSX.Element
+  function messageMapper(x: Message): JSX.Element
   {
     return (
-      <Message key={ x.mid } uid={ x.uid } time={ x.time } text={ x.text } />
+      <MessageBox key={ x.mid } mid={ x.mid } image={ x.image } time={ x.time } text={ x.text } />
     )
   }
 
@@ -103,10 +104,13 @@ function Chat(): JSX.Element
 
       const time: string = `${ hours }:${ minutes }` ;
 
+      console.log(user.image) ;
+
       const message: MessageType =
       {
         gid: +gid,
         uid: user.uid,
+        image: user.image,
         time: time,
         text: text.trim()
       } ;
@@ -145,54 +149,58 @@ function Chat(): JSX.Element
       <meta name="keywords" content="WhatsChat, Chat" />
     </Head>
 
-    <div className={ "container-fluid d-flex justify-content-between align-items-center " + styles.chatNav }>
-      <div className="d-flex justify-content-center align-items-center">
+    <nav className={ "navbar navbar-light navbar-expand sticky-top d-flex justify-content-between align-items-center " + styles.navBar }>
+      <div className="container-fluid">
+        <div className="d-flex justify-content-center align-items-center">
+          <Link href="/dashboard">
+            <i className={ "fas fa-home d-flex justify-content-center align-items-center " + styles.navBarIcon }></i>
+          </Link>
 
-        <Link href="/dashboard" className={ styles.chatLink }>
-          <i className="fas fa-chevron-circle-left"></i>
-        </Link>
+          <h1 className={ styles.navBarH }> { receiver?.name } </h1>
+        </div>
 
-        <p className={ styles.chatName }> { receiver?.name } </p>
+        <Image
+          src={ (receiver?.image) ? avatars[receiver.image] : avatars[0] }
+          alt="Avatar"
+          draggable="false"
+          placeholder="empty"
+          priority
+          className={ "scale " + styles.navBarImg }
+        />
       </div>
-      <Image
-        src={ receiverImg }
-        alt="Avatar"
-        draggable="false"
-        placeholder="empty"
-        priority
-        className={ "scale " + styles.chatNavImg }
-      />
-    </div>
+    </nav>
 
-    <div className={ "container-fluid d-flex flex-column justify-content-end align-items-center justify-content-sm-end " + styles.messageDiv }>
-    {
+    <div className={ "container-fluid d-flex flex-column justify-content-end align-items-center justify-content-sm-end " + styles.chatContainer }>
+    { user &&
       messages.map(messageMapper)
     }
     </div>
 
-    <div className={ "container-fluid d-flex justify-content-center align-items-center " + styles.inputDiv }>
-      <form method="post" target="_self" encType="application/x-www-form-urlencoded" className="d-flex justify-content-center align-items-center width95"
-      onSubmit={ handleSubmit } autoComplete="off" noValidate>
-        
-        <input 
-          name="text"
-          type="text"
-          value={ text }
-          onChange={ handleChange }
-          maxLength={ 100 }
-          minLength={ 0 }
-          placeholder="Type Message Here..."
-          autoFocus
-          required
-          className={ "d-flex justify-content-center align-items-center form-control " + styles.txtInput }
-        />
+    <nav className={ "navbar navbar-light navbar-expand fixed-bottom d-flex justify-content-center align-items-center " + styles.inputDiv }>
+      <div className="container-fluid">
+        <form method="post" target="_self" encType="application/x-www-form-urlencoded" className="d-flex justify-content-evenly align-items-center w-100"
+        onSubmit={ handleSubmit } autoComplete="off" noValidate>
 
-        <button onClick={ send } type="button" className={ "d-flex justify-content-center align-items-center " + styles.inputBtn }>
-          <i className={ "fas fa-play " + styles.btnIcon }></i>
-        </button>
+          <input 
+            name="text"
+            type="text"
+            value={ text }
+            onChange={ handleChange }
+            maxLength={ 100 }
+            minLength={ 0 }
+            placeholder="Type Message Here..."
+            autoFocus
+            required
+            className={ "form-control " + styles.inputText }
+          />
 
-      </form>
-    </div>
+          <button onClick={ send } type="button" className={ "d-flex justify-content-center align-items-center " + styles.inputBtn }>
+            <i className={ "fas fa-caret-right " + styles.inputIcon }></i>
+          </button>
+
+        </form>
+      </div>
+    </nav>
   </>
   )
 }

@@ -35,7 +35,7 @@ a:hover
   cursor: pointer ;
 }
 
-::placeholder
+input::placeholder
 {
   color: var(--bs-gray-500) !important ;
 }
@@ -48,12 +48,12 @@ a:hover
 
 .scale:hover
 {
-  transform: scale(0.90) ;
+  transform: scale(0.80) ;
 }
 
 .scale:active
 {
-  transform: scale(0.95) ;
+  transform: scale(0.90) ;
 }
 
 /* Footer */

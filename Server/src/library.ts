@@ -15,6 +15,7 @@ async function addMessage(x: MessageType): Promise<Message[]>
       {
         gid: x.gid,
         uid: x.uid,
+        image: x.image,
         time: x.time,
         text: x.text
       }
