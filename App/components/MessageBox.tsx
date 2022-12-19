@@ -1,19 +1,11 @@
 import Image from "next/image" ;
+import type { Message } from "@prisma/client" ;
 // ...
 import avatars from "components/Avatars" ;
 import styles from "styles/chat.module.css" ;
 
-// Props
-interface Props
-{
-  mid: number ;
-  image: number ;
-  time: string ;
-  text: string ;
-}
-
 // Message Box
-function MessageBox({ mid, image, time, text }: Props): JSX.Element
+function MessageBox({ image, time, text }: Message): JSX.Element
 {
   return (
   <>

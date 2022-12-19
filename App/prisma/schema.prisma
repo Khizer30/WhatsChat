@@ -11,9 +11,9 @@ datasource db {
 model User {
   uid      Int       @id @unique @default(autoincrement())
   name     String    @default("")
-  image    Int       @default(1)
   email    String    @unique @default("")
   password String    @default("")
+  image    Int       @default(1)
   groups   Group[]
   messages Message[]
 

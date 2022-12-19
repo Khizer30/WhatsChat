@@ -1,10 +1,10 @@
-import { Group } from "@prisma/client" ;
+import type { User, Group } from "@prisma/client" ;
 // ...
 import prisma from "config/prisma" ;
-import type { LoginType, UserType } from "components/Interfaces" ;
+import type { LogInType, UserType, SignUpReqType } from "components/Interfaces" ;
 
 // Fetch User
-async function fetchUser(data: LoginType): Promise<UserType | null>
+async function fetchUser(data: LogInType): Promise<UserType | null>
 {
   let user: UserType | null = null ;
 
@@ -20,8 +20,11 @@ async function fetchUser(data: LoginType): Promise<UserType | null>
       {
         uid: true,
         name: true,
+        email: true,
+        password: false,
         image: true,
-        email: true
+        groups: false,
+        messages: false
       }
     }) ;
   }
@@ -49,8 +52,11 @@ async function fetchContacts(): Promise<UserType[]>
       {
         uid: true,
         name: true,
+        email: true,
+        password: false,
         image: true,
-        email: true
+        groups: false,
+        messages: false
       }
     }) ;
   }
@@ -129,5 +135,34 @@ async function fetchGroup(sender: number, reciever: number): Promise<number>
   return group.gid ;
 }
 
+// Create User
+async function createUser(data: SignUpReqType): Promise<User | null>
+{
+  let user: User | null = null ;
+
+  try
+  {
+    user = await prisma.user.create({
+      data:
+      {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        image: data.image
+      }
+    }) ;
+  }
+  catch (err: unknown)
+  {
+    console.log(err) ;
+  }
+  finally
+  {
+    await prisma.$disconnect() ;
+  }
+
+  return user ;
+}
+
 // Exports
-export { fetchUser, fetchContacts, fetchGroup } ;
+export { fetchUser, fetchContacts, fetchGroup, createUser } ;

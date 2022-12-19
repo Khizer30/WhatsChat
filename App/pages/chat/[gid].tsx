@@ -1,17 +1,19 @@
 import Head from "next/head" ;
 import Image from "next/image" ;
 import Link from "next/link" ;
-import { useState, useEffect } from "react" ;
+import { useState, useEffect, useRef } from "react" ;
 import { useRouter } from "next/router" ;
 import { useSession } from "next-auth/react" ;
 import io from "socket.io-client" ;
 import type { Message } from "@prisma/client" ;
 import type { NextRouter } from "next/router" ;
 // ...
-import avatars from "components/Avatars" ;
 import MessageBox from "components/MessageBox" ;
 import type { MessageType, UserType } from "components/Interfaces" ;
 import styles from "styles/chat.module.css" ;
+import avatars from "components/Avatars" ;
+import homeIcon from "images/home.svg" ;
+import sendIcon from "images/send.svg" ;
 
 // Chat
 function Chat(): JSX.Element
@@ -23,7 +25,8 @@ function Chat(): JSX.Element
   const [loading, setLoading] = useState<boolean>(true) ;
   const [text, setText] = useState<string>("") ;
   const [messages, setMessages] = useState<Message[]>([]) ;
-  const socket = io(process.env.NEXT_PUBLIC_URL!) ;
+  const spanElement = useRef<HTMLSpanElement | undefined>(undefined) ;
+  const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!) ;
   const router: NextRouter = useRouter() ;
   const { gid } = router.query ;
 
@@ -84,7 +87,7 @@ function Chat(): JSX.Element
   function messageMapper(x: Message): JSX.Element
   {
     return (
-      <MessageBox key={ x.mid } mid={ x.mid } image={ x.image } time={ x.time } text={ x.text } />
+      <MessageBox key={ x.mid } { ...x } />
     )
   }
 
@@ -104,8 +107,6 @@ function Chat(): JSX.Element
 
       const time: string = `${ hours }:${ minutes }` ;
 
-      console.log(user.image) ;
-
       const message: MessageType =
       {
         gid: +gid,
@@ -118,8 +119,12 @@ function Chat(): JSX.Element
       // Emit Message
       socket.emit("message", message) ;
 
-      // Reset
       setText("") ;
+
+      if (spanElement.current)
+      {
+        spanElement.current.scrollIntoView() ;
+      }
     }
   }
 
@@ -152,11 +157,19 @@ function Chat(): JSX.Element
     <nav className={ "navbar navbar-light navbar-expand sticky-top d-flex justify-content-between align-items-center " + styles.navBar }>
       <div className="container-fluid">
         <div className="d-flex justify-content-center align-items-center">
+          
           <Link href="/dashboard">
-            <i className={ "fas fa-home d-flex justify-content-center align-items-center " + styles.navBarIcon }></i>
+            <Image
+              src={ homeIcon }
+              alt="Home Icon"
+              draggable="false"
+              placeholder="empty"
+              priority
+              className={ "scale" }
+            />
           </Link>
 
-          <h1 className={ styles.navBarH }> { receiver?.name } </h1>
+          <h1 className={ styles.navBarH }> { (receiver?.name) ? receiver.name : "" } </h1>
         </div>
 
         <Image
@@ -171,15 +184,16 @@ function Chat(): JSX.Element
     </nav>
 
     <div className={ "container-fluid d-flex flex-column justify-content-end align-items-center justify-content-sm-end " + styles.chatContainer }>
-    { user &&
+    {
       messages.map(messageMapper)
     }
+    <span ref={ spanElement } className={ styles.spanElement } />
     </div>
 
     <nav className={ "navbar navbar-light navbar-expand fixed-bottom d-flex justify-content-center align-items-center " + styles.inputDiv }>
       <div className="container-fluid">
         <form method="post" target="_self" encType="application/x-www-form-urlencoded" className="d-flex justify-content-evenly align-items-center w-100"
-        onSubmit={ handleSubmit } autoComplete="off" noValidate>
+        onSubmit={ handleSubmit } autoComplete="off">
 
           <input 
             name="text"
@@ -194,8 +208,14 @@ function Chat(): JSX.Element
             className={ "form-control " + styles.inputText }
           />
 
-          <button onClick={ send } type="button" className={ "d-flex justify-content-center align-items-center " + styles.inputBtn }>
-            <i className={ "fas fa-caret-right " + styles.inputIcon }></i>
+          <button type="button" onClick={ send } className={ "d-flex justify-content-center align-items-center " + styles.inputBtn }>
+            <Image
+              src={ sendIcon }
+              alt="Send Icon"
+              draggable="false"
+              placeholder="empty"
+              priority
+            />
           </button>
 
         </form>

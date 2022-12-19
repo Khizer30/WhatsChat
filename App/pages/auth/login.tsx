@@ -8,17 +8,17 @@ import type { NextRouter } from "next/router" ;
 import type { SignInResponse } from "next-auth/react" ;
 // ...
 import { loginObj } from "components/Library" ;
-import type { LoginType } from "components/Interfaces" ;
+import type { LogInType } from "components/Interfaces" ;
 import styles from "styles/login.module.css" ;
-import logo from "images/logo.svg" ;
+import logo from "images/logo_black.svg" ;
 
-// Login
-function Login(): JSX.Element
+// Log In
+function LogIn(): JSX.Element
 {
   // Variables
   const { status } = useSession() ;
   const [loading, setLoading] = useState<boolean>(true) ;
-  const [inputs, setInputs] = useState<LoginType>(loginObj) ;
+  const [inputs, setInputs] = useState<LogInType>(loginObj) ;
   const [mes, setMes] = useState<string>("") ;
   const router: NextRouter = useRouter() ;
 
@@ -38,7 +38,7 @@ function Login(): JSX.Element
   // Handle Change
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void
   {
-    setInputs((values: LoginType) => ({ ...values, [event.target.name]: event.target.value })) ;
+    setInputs((values: LogInType) => ({ ...values, [event.target.name]: event.target.value })) ;
   }
 
   // Handle Submit
@@ -168,9 +168,9 @@ function Login(): JSX.Element
             className={ "form-control " + styles.logInTxt } 
           />
 
-          <button onClick={ send } type="button" className={ styles.logInBtn }> Log In </button>
+          <button type="button" onClick={ send } className={ styles.logInBtn }> Log In </button>
 
-          <Link href="#" className={ styles.logInLink }> Create New Account </Link>
+          <Link href="/auth/signup" className={ styles.logInLink }> Create New Account </Link>
         </form>
       </div>
     </div>
@@ -182,5 +182,5 @@ function Login(): JSX.Element
   )
 }
 
-// Export Login
-export default Login ;
+// Export Log In
+export default LogIn ;

@@ -1,7 +1,7 @@
 /* Default */
 body
 {
-  background-color: rgb(37,37,37) ;
+  background: #3B3A30 ;
 }
 
 p
@@ -22,6 +22,12 @@ h1
 .width95
 {
   width: 95% !important ;
+}
+
+.marginTB 
+{
+  margin-top: 1rem ;
+  margin-bottom: 1rem ;
 }
 
 a
@@ -60,12 +66,12 @@ input::placeholder
 footer 
 {
   min-height: 7vh ;
-  background: rgb(37,37,37) ;
+  background: #3B3A30 ;
 }
 
 .footerP 
 {
-  color: var(--bs-gray-300) ;
+  color: #EAECE5 ;
   font-family: Oxygen, sans-serif ;
   font-size: 0.75em ;
   text-align: center ;

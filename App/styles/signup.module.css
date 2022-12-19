@@ -1,0 +1,152 @@
+/* Main */
+.columnHeight 
+{
+  height: 93vh ;
+}
+
+.mainImg
+{
+  width: 70% ;
+  height: auto ;
+  margin-top: 1rem ;
+  margin-bottom: 1rem ;
+}
+
+.inputText 
+{
+  background: #3B3A30 ;
+  border-radius: 10px ;
+  border-color: #EAECE5 ;
+  font-family: Epilogue, sans-serif ;
+  color: #EAECE5 ;
+  font-size: 1em ;
+  margin-top: 0.75rem ;
+  margin-bottom: 0.75rem ;
+}
+
+.inputText:focus
+{
+  background: #3B3A30 ;
+  font-family: Epilogue, sans-serif ;
+  color: #EAECE5 ;
+  font-size: 1em ;
+  border-color: #EAECE5 ;
+  box-shadow: 2.5px 2.5px #EAECE5 ;
+}
+
+.avatarImg 
+{
+  min-width: 70px ;
+  max-width: 70px ;
+  min-height: 70px ;
+  max-height: 70px ;
+  border-radius: 100px ;
+  border: 1px solid #EAECE5 ;
+}
+
+.avatarBtn 
+{
+  background: #3B3A30 ;
+  font-family: Epilogue, sans-serif ;
+  text-align: center ;
+  font-size: 1em ;
+  color: #EAECE5 ;
+  width: 150px ;
+  height: 45px ;
+  border-radius: 30px ;
+  border: 1.5px solid #EAECE5 ;
+
+  transition: all 200ms ease-in ;
+}
+
+.avatarBtn:hover
+{
+  background: #EAECE5 ;
+  font-weight: bold ;
+  color: #3B3A30 ;
+  border: 1.5px solid #EAECE5 ;
+  border: 1.5px solid #3B3A30 ;
+  transform: scale(0.90) ;
+}
+
+.avatarBtn:focus
+{
+  transform: scale(0.95) ;
+  outline: none ;
+}
+
+.mainBtn 
+{
+  background: #EAECE5 ;
+  font-family: Epilogue, sans-serif ;
+  text-align: center ;
+  font-size: 1em ;
+  color: #3B3A30 ;
+  width: 150px ;
+  height: 50px ;
+  border-radius: 30px ;
+  font-weight: bold ;
+  border: 1.5px solid var(--bs-black) ;
+
+  transition: all 200ms ease-in ;
+}
+
+.mainBtn:hover
+{
+  transform: scale(0.90) ;
+  background: #3B3A30 ;
+  color: #EAECE5 ;
+  border: 1.5px solid #EAECE5 ;
+}
+
+.mainBtn:focus
+{
+  transform: scale(0.95) ;
+  outline: none ;
+}
+
+.signUpErr 
+{
+  font-family: Epilogue, sans-serif ;
+  text-align: center ;
+  font-size: 0.9em ;
+  color: #EAECE5 ;
+}
+
+.signUpLink 
+{
+  color: #EAECE5 ;
+  font-size: 0.9em ;
+  font-family: Epilogue, sans-serif ;
+  text-align: center ;
+
+  transition: all 250ms ease-in ;
+}
+
+.signUpLink:hover
+{
+  transform: scale(1.05) ;
+  color: #EAECE5 ;
+}
+
+.signUpLink:focus
+{
+  transform: scale(1.10) ;
+  outline: none ;
+}
+
+/* Lottie */
+.lottie
+{
+  transition: all 300ms ease-in ;
+}
+
+.lottie:hover
+{
+  transform: scale(0.90) ;
+}
+
+.lottie:active
+{
+  transform: scale(0.95) ;
+}

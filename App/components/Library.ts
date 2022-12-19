@@ -1,11 +1,21 @@
 // ...
-import type { LoginType, ResType } from "components/Interfaces" ;
+import type { LogInType, SignUpType, ResType } from "components/Interfaces" ;
 
 // Log In Object
-const loginObj: LoginType =
+const loginObj: LogInType =
 {
   email: "",
   password: ""
+} ;
+
+// Sign Up Object
+const signupObj: SignUpType =
+{
+  name: "",
+  email: "",
+  password: "",
+  re_password: "",
+  image: 1
 } ;
 
 // Create Response
@@ -50,4 +60,4 @@ async function fetchPost(url: string, data: any): Promise<ResType>
 }
 
 // Exports
-export { loginObj, createResponse, fetchGet, fetchPost } ;
+export { loginObj, signupObj, createResponse, fetchGet, fetchPost } ;

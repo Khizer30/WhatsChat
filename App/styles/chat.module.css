@@ -7,37 +7,6 @@
   border-bottom: 0.25rem solid #3B3A30 ;
 }
 
-.navBarIcon 
-{
-  min-width: 40px ;
-  max-width: 40px ;
-  min-height: 40px ;
-  max-height: 40px ;
-  font-size: 20px ;
-  color: #EAECE5 ;
-  background: #3B3A30 ;
-  border-radius: 30px ;
-
-  transition: all 250ms ease-in ;
-}
-
-.navBarIcon:hover
-{
-  color: #FFFFFF ;
-  transform: scale(0.80) ;
-}
-
-.navBarIcon:focus
-{
-  outline: none ;
-}
-
-.navBarIcon:active
-{
-  color: #FFFFFF ;
-  transform: scale(0.90) ;
-}
-
 .navBarH 
 {
   font-family: Epilogue, sans-serif ;
@@ -56,6 +25,7 @@
   max-width: 50px ;
   min-height: 50px ;
   max-height: 50px ;
+  border: 1px solid #3B3A30 ;
   border-radius: 30px ;
 }
 
@@ -117,7 +87,13 @@
   max-width: 35px ;
   min-height: 35px ;
   max-height: 35px ;
+  border: 1px solid #3B3A30 ;
   border-radius: 30px ;
+}
+
+.spanElement
+{
+  min-height: 45px ;
 }
 
 /* Input */
@@ -179,11 +155,4 @@
 {
   background: #EAECE5 ;
   transform: scale(0.90) ;
-}
-
-.inputIcon 
-{
-  font-size: 35px ;
-  color: #3B3A30 ;
-  margin-left: 5px ;
 }

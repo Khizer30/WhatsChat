@@ -80,7 +80,7 @@ function Dashboard({ contacts }: Props): JSX.Element
   function contactsMapper(x: UserType): JSX.Element
   {
     return (
-      <button key={ x.uid } onClick={ () => startChat(x) } type="button"> { x.name } </button>
+      <button type="button" key={ x.uid } onClick={ () => startChat(x) } > { x.name } </button>
     )
   }
 
@@ -130,7 +130,7 @@ function Dashboard({ contacts }: Props): JSX.Element
       <meta name="keywords" content="WhatsChat, Dashboard" />
     </Head>
 
-    <button onClick={ logOut } type="button"> Sign Out </button>
+    <button type="button" onClick={ logOut }> Sign Out </button>
     <br /> <br />
 
     {
