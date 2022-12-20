@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials" ;
 import type { NextAuthOptions, DefaultUser } from "next-auth" ;
 // ...
 import { fetchUser } from "components/Prisma" ;
-import type { UserType } from "components/Interfaces" ;
+import type { UserType, ReCAPTCHAResType } from "components/Interfaces" ;
 
 // Auth Options
 const authOptions: NextAuthOptions =
@@ -21,7 +21,8 @@ const authOptions: NextAuthOptions =
       credentials:
       {
         email: { type: "text" },
-        password: { type: "password" }
+        password: { type: "password" },
+        token: { type: "text" }
       },
       async authorize(credentials, req): Promise<DefaultUser | null>
       {
@@ -30,7 +31,17 @@ const authOptions: NextAuthOptions =
 
         if (credentials)
         {
-          data = await fetchUser({ email: credentials.email, password: credentials.password }) ;
+          const response: Response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${ process.env.RECAPTCHA_SECRET_KEY! }&response=${ credentials.token }`, 
+          {
+            mode: "cors",
+            method: "POST"
+          }) ;
+          const result: ReCAPTCHAResType = await response.json() ;
+
+          if (result.success)
+          {
+            data = await fetchUser({ email: credentials.email, password: credentials.password }) ;
+          }
         }
 
         if (data)

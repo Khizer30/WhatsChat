@@ -1,7 +1,8 @@
 import Head from "next/head" ;
 import Image from "next/image" ;
 import Link from "next/link" ;
-import { useState, useEffect } from "react" ;
+import ReCAPTCHA from "react-google-recaptcha" ;
+import { useState, useEffect, useRef } from "react" ;
 import { useRouter } from "next/router" ;
 import { useSession, signIn } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
@@ -20,6 +21,7 @@ function LogIn(): JSX.Element
   const [loading, setLoading] = useState<boolean>(true) ;
   const [inputs, setInputs] = useState<LogInType>(loginObj) ;
   const [mes, setMes] = useState<string>("") ;
+  const recaptchaRef = useRef<ReCAPTCHA | undefined>(undefined) ;
   const router: NextRouter = useRouter() ;
 
   // Redirect
@@ -31,6 +33,11 @@ function LogIn(): JSX.Element
     }
     else if (status === "unauthenticated")
     {
+      if (recaptchaRef.current)
+      {
+        recaptchaRef.current.reset() ;
+      }
+
       setLoading(false) ;
     }
   }, [status]) ;
@@ -82,16 +89,30 @@ function LogIn(): JSX.Element
   // Send
   async function send(): Promise<void>
   {
-    setMes("") ;
-
-    if (checkIt(inputs.email.trim(), 100, "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com)\\b") &&
-    checkIt(inputs.password.trim(), 100, "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&=])[A-Za-z\\d@$!%*#?&=]{8,}$"))
+    if (recaptchaRef.current)
     {
-      const response: SignInResponse | undefined = await signIn("credentials", { email: inputs.email.trim(), password: inputs.password.trim(), redirect: false, callbackUrl: "/dashboard" }) ;
+      setMes("") ;
 
-      if (response && !response.ok)
+      if (checkIt(inputs.email.trim(), 100, "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com)\\b") &&
+      checkIt(inputs.password.trim(), 100, "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&=])[A-Za-z\\d@$!%*#?&=]{8,}$"))
       {
-        setMes("User Doesn't Exist") ;
+        const recaptchaResult: string | null = await recaptchaRef.current.executeAsync() ;
+
+        if (recaptchaResult)
+        {
+          const response: SignInResponse | undefined = await signIn("credentials", { email: inputs.email.trim(), password: inputs.password.trim(), token: recaptchaResult, redirect: false, callbackUrl: "/dashboard" }) ;
+
+          if (response && !response.ok)
+          {
+            setMes("User Doesn't Exist") ;
+            recaptchaRef.current.reset() ;
+          }
+        }
+        else
+        {
+          setMes("ReCAPTCHA Error, Reload The Page") ;
+          recaptchaRef.current.reset() ;
+        }
       }
     }
   }
@@ -171,6 +192,13 @@ function LogIn(): JSX.Element
           <button type="button" onClick={ send } className={ styles.logInBtn }> Log In </button>
 
           <Link href="/auth/signup" className={ styles.logInLink }> Create New Account </Link>
+
+          <ReCAPTCHA
+            ref={ recaptchaRef }
+            sitekey={ process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY! }
+            size="invisible"
+            theme="dark"
+          />
         </form>
       </div>
     </div>

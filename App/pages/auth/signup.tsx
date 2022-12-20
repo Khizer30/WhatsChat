@@ -36,6 +36,11 @@ function SignUp(): JSX.Element
     }
     else if (status === "unauthenticated")
     {
+      if (recaptchaRef.current)
+      {
+        recaptchaRef.current.reset() ;
+      }
+
       setLoading(false) ;
     }
   }, [status]) ;
@@ -115,7 +120,6 @@ function SignUp(): JSX.Element
       {
         if (inputs.password === inputs.re_password)
         {
-          recaptchaRef.current.reset() ;
           const recaptchaResult: string | null = await recaptchaRef.current.executeAsync() ;
 
           if (recaptchaResult)
@@ -131,16 +135,22 @@ function SignUp(): JSX.Element
 
             const res: ResType = await fetchPost("/api/signup", data) ;
 
-            setMes(res.message) ;
             if (res.code === 100)
             {
+              setMes(res.message) ;
               setInputs(signupObj) ;
               setTimeout(() => router.push("/auth/login"), 2500) ;
+            }
+            else
+            {
+              setMes(res.message) ;
+              recaptchaRef.current.reset() ;
             }
           }
           else
           {
-            setMes("ReCAPTCHA Error, Reload The Page")
+            setMes("ReCAPTCHA Error, Reload The Page") ;
+            recaptchaRef.current.reset() ;
           }
         }
         else
