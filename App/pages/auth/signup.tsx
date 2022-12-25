@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react" ;
 import type React from "react" ;
 import type { NextRouter } from "next/router" ;
 // ...
+import LoadingIcon from "components/LoadingIcon" ;
 import { signupObj, fetchPost } from "components/Library" ;
 import type { SignUpType, SignUpReqType, ResType } from "components/Interfaces" ;
 import styles from "styles/signup.module.css" ;
@@ -173,7 +174,7 @@ function SignUp(): JSX.Element
         <meta name="keywords" content="WhatsChat, Redirect" />
       </Head>
 
-      <h1 style={{ color: "white" }}> Loading... </h1>
+      <LoadingIcon />
     </>
     )
   }

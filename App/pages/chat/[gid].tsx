@@ -8,6 +8,7 @@ import io from "socket.io-client" ;
 import type { Message } from "@prisma/client" ;
 import type { NextRouter } from "next/router" ;
 // ...
+import LoadingIcon from "components/LoadingIcon" ;
 import MessageBox from "components/MessageBox" ;
 import type { MessageType, UserType } from "components/Interfaces" ;
 import styles from "styles/chat.module.css" ;
@@ -140,7 +141,7 @@ function Chat(): JSX.Element
         <meta name="keywords" content="WhatsChat, Redirect" />
       </Head>
 
-      <h1 style={{ color: "white" }}> Loading... </h1>
+      <LoadingIcon />
     </>
     )
   }

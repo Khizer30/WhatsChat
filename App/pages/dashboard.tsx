@@ -4,6 +4,7 @@ import { useRouter } from "next/router" ;
 import { useSession, signOut } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
 // ...
+import LoadingIcon from "components/LoadingIcon" ;
 import { fetchContacts } from "components/Prisma" ;
 import { fetchPost } from "components/Library" ;
 import type { UserType, GroupReqType, ResType } from "components/Interfaces" ;
@@ -116,7 +117,7 @@ function Dashboard({ contacts }: Props): JSX.Element
         <meta name="keywords" content="WhatsChat, Redirect" />
       </Head>
 
-      <h1 style={{ color: "white" }}> Loading... </h1>
+      <LoadingIcon />
     </>
     )
   }

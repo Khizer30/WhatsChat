@@ -8,6 +8,7 @@ import { useSession, signIn } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
 import type { SignInResponse } from "next-auth/react" ;
 // ...
+import LoadingIcon from "components/LoadingIcon" ;
 import { loginObj } from "components/Library" ;
 import type { LogInType } from "components/Interfaces" ;
 import styles from "styles/login.module.css" ;
@@ -129,7 +130,7 @@ function LogIn(): JSX.Element
         <meta name="keywords" content="WhatsChat, Redirect" />
       </Head>
 
-      <h1 style={{ color: "white" }}> Loading... </h1>
+      <LoadingIcon />
     </>
     )
   }

@@ -2,6 +2,8 @@ import Head from "next/head" ;
 import { useRouter } from "next/router" ;
 import { useSession } from "next-auth/react" ;
 import type { NextRouter } from "next/router" ;
+// ...
+import LoadingIcon from "components/LoadingIcon" ;
 
 // Home
 function Home(): JSX.Element
@@ -29,7 +31,7 @@ function Home(): JSX.Element
       <meta name="keywords" content="WhatsChat, Redirect" />
     </Head>
 
-    <h1 style={{ color: "white" }}> Loading... </h1>
+    <LoadingIcon />
   </>
   )
 }
