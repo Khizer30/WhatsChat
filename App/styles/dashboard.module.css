@@ -1,0 +1,70 @@
+/* Navbar */
+.navBarLogo 
+{
+  width: 210px !important ;
+  height: 70px !important ;
+}
+
+.navBar 
+{
+  max-height: 10vh ;
+  background: #3B3A30 ;
+  border-style: none ;
+  padding: 0.5rem ;
+}
+
+.navBarUserImg 
+{
+  width: 50px ;
+  height: 50px ;
+  border-radius: 30px ;
+  border: 1.5px solid #EAECE5 ;
+  cursor: pointer ;
+}
+
+/* User */
+.mainContainer 
+{
+  min-height: 83vh ;
+}
+
+.userDiv 
+{
+  width: 200px ;
+  height: 200px ;
+  background: #EAECE5 ;
+  border-radius: 10px ;
+  margin: 1rem ;
+  cursor: pointer ;
+
+  transition: all 250ms ease-in ;
+}
+
+.userDiv:hover
+{
+  background: #FFFFFF ;
+  transform: scale(0.90) ;
+}
+
+.userDiv:active
+{
+  transform: scale(0.95) ;
+}
+
+.userImg 
+{
+  width: 100px ;
+  height: 100px ;
+  border-radius: 100px ;
+  border: 1px solid #3B3A30 ;
+}
+
+.userP 
+{
+  margin: 0 ;
+  font-family: Epilogue, sans-serif ;
+  text-align: center ;
+  font-size: 0.9em ;
+  color: #3B3A30 ;
+  font-weight: bold ;
+}

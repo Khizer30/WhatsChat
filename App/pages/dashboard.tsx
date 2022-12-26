@@ -1,4 +1,6 @@
 import Head from "next/head" ;
+import Link from "next/link" ;
+import Image from "next/image" ;
 import { useState, useEffect } from "react" ;
 import { useRouter } from "next/router" ;
 import { useSession, signOut } from "next-auth/react" ;
@@ -8,6 +10,9 @@ import LoadingIcon from "components/LoadingIcon" ;
 import { fetchContacts } from "components/Prisma" ;
 import { fetchPost } from "components/Library" ;
 import type { UserType, GroupReqType, ResType } from "components/Interfaces" ;
+import styles from "styles/dashboard.module.css" ;
+import avatars from "components/Avatars" ;
+import logo from "images/logo_white.svg" ;
 
 // Props
 interface Props
@@ -81,7 +86,19 @@ function Dashboard({ contacts }: Props): JSX.Element
   function contactsMapper(x: UserType): JSX.Element
   {
     return (
-      <button type="button" key={ x.uid } onClick={ () => startChat(x) } > { x.name } </button>
+      <div key={ x.uid } className="col d-flex justify-content-center align-items-center">
+        <div onClick={ () => startChat(x) } className={ "d-flex flex-column justify-content-evenly align-items-center " + styles.userDiv }>
+          <Image
+            src={ avatars[x.image] }
+            alt="User Avatar"
+            draggable="false"
+            placeholder="empty"
+            priority
+            className={ styles.userImg }
+          />
+          <p className={ styles.userP }> { x.name } </p>
+        </div>
+      </div>
     )
   }
 
@@ -131,12 +148,50 @@ function Dashboard({ contacts }: Props): JSX.Element
       <meta name="keywords" content="WhatsChat, Dashboard" />
     </Head>
 
-    <button type="button" onClick={ logOut }> Sign Out </button>
-    <br /> <br />
+    <nav className={ "navbar navbar-light navbar-expand " + styles.navBar }>
+      <div className="navbar-brand pad0">
+        <Image
+          src={ logo }
+          alt="Logo"
+          draggable="false"
+          placeholder="empty"
+          priority
+          className={ styles.navBarLogo }
+        />
+      </div>
+      
+      <button data-bs-toggle="collapse" data-bs-target="#navCol" className="navbar-toggler">
+        <span className="visually-hidden"> Toggle Navigation </span>
+        <span className="navbar-toggler-icon"></span>
+      </button>
 
+      <div id="navCol" className="collapse navbar-collapse">
+        <ul className="navbar-nav ms-auto">
+          <div onClick={ logOut } title="Log Out" className="nav-link">
+            <Image
+              src={ (user?.image) ? avatars[user.image] : avatars[0] }
+              alt="User Avatar"
+              draggable="false"
+              placeholder="empty"
+              priority
+              className={ "scale " + styles.navBarUserImg }
+            />
+          </div>
+        </ul>
+      </div>
+    </nav>
+
+    <div className={ "container-fluid d-flex flex-column justify-content-center align-items-center " + styles.mainContainer }>
+      <div className="row">
     {
       contacts.filter(filterUser).map(contactsMapper)
     }
+      </div>
+    </div>
+
+    <footer className="d-flex d-sm-flex justify-content-center align-items-center justify-content-sm-center align-items-sm-center">
+      <p className="footerP"> @WhatsChat </p>
+    </footer>
   </>
   )
 }
