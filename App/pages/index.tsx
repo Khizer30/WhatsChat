@@ -25,10 +25,10 @@ function Home(): JSX.Element
   return (
   <>
     <Head>
-      <title> Redirect </title>
+      <title> WhatsChat </title>
 
-      <meta name="description" content="WhatsChat Redirect" />
-      <meta name="keywords" content="WhatsChat, Redirect" />
+      <meta name="description" content="WhatsChat is an internationally available freeware, centralized instant messaging service owned by Syed Muhammad Khizer. It allows users to send texts to other members of the WhatsChat community." />
+      <meta name="keywords" content="WhatsChat" />
     </Head>
 
     <LoadingIcon />

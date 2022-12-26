@@ -1,0 +1,23 @@
+{
+  "name": "WhatsChat",
+  "short_name": "WhatsChat",
+  "description": "WhatsChat is an internationally available freeware, centralized instant messaging service owned by Syed Muhammad Khizer. It allows users to send texts to other members of the WhatsChat community.",
+  "icons": 
+  [
+    {
+      "src": "../images/favicon/4.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "../images/favicon/5.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ],
+  "theme_color": "#3B3A30",
+  "background_color": "#EAECE5",
+  "start_url": "/dashboard",
+  "display": "fullscreen",
+  "orientation": "portrait"
+}
